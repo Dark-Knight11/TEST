@@ -260,7 +260,7 @@ export default {
 				return;
 			}
 			try {
-				const res = await axios.post("${API_URL}/hackathon/team", {
+				const res = await axios.post(`${API_URL}/hackathon/team`, {
 					"hackathon_id": this.hackathon._id,
 					"name": this.teamName
 				}, {

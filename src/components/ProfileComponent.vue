@@ -202,7 +202,7 @@ export default {
 	methods: {
 		async editProfile() {
 			try {
-				const res = await axios.put("${API_URL}/user", {
+				const res = await axios.put(`${API_URL}/user`, {
 					first_name: this.fname,
 					last_name: this.lname,
 					email: this.email
@@ -219,7 +219,7 @@ export default {
 		async createHackathon(event) {
 			event.preventDefault()
 			try {
-				await axios.post("${API_URL}/hackathon", {
+				await axios.post(`${API_URL}/hackathon`, {
 					name: this.name,
 					imgUrl: this.imgUrl,
 					description: this.description,

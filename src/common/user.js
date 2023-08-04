@@ -5,4 +5,4 @@ export const store = reactive({
     loggedIn: localStorage.user ? true : false,
 });
 
-export const API_URL = "https://bronze-jay-wear.cyclic.app/api";
+export const API_URL = process.env.VUE_APP_ROOT_API;
