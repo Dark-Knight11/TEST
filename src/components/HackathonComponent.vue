@@ -10,7 +10,7 @@
 
 	<div class="w-full flex relative flex-col sm:flex-row justify-center items-start">
 		<div class="sm:w-3/5"><rules-component :hackathon="hackathon" :isAdmin="isAdmin" /></div>
-		<div class="sm:w-2/5"><announcements-component :hackathon="hackathon" :isAdmin="isAdmin" /></div>
+		<div v-show="showAnoun || isAdmin" class="sm:w-2/5"><announcements-component :hackathon="hackathon" :isAdmin="isAdmin" /></div>
 	</div>
 
 	<sponsors-component :hackathon="hackathon" :isAdmin="isAdmin" />
@@ -45,6 +45,7 @@ export default {
 			isJudge: false,
 			isAdmin: false,
 			showProblems: false,
+			showAnoun: false,
 			hackathonId: this.$route.params.id,
 			startDateProp: '',
 			endDateProp: '',
@@ -58,17 +59,19 @@ export default {
 			try {
 				const response = await axios.get(`${API_URL}/hackathon/${this.hackathonId}`)
 				this.hackathon = response.data
+				this.showProblems = this.hackathon.problem_statement.length > 0
+				this.showAnoun = this.hackathon.announcements.length > 0
+				console.log(this.showProblems)
+				this.startDateProp = moment(this.hackathon.start_date).utc().format('MMM DD -');
+				this.endDateProp = moment(this.hackathon.end_date).utc().format('MMM DD, YYYY');
+				this.appStartDateProp = moment(this.hackathon.application_open).utc().format('MMM DD -');
+				this.appEndDateProp = moment(this.hackathon.application_deadline).utc().format('MMM DD, YYYY');
 				const user = JSON.parse(localStorage.user)
 				this.isRegistered = user.hackathonsParticipated.includes(this.hackathon._id)
 				this.isJudge = this.hackathon.judges.some(
 					(member) => member._id.toString() === user._id
 				);
 				this.isAdmin = this.hackathon.admin._id === user._id
-				this.showProblems = this.hackathon.problem_statement.length > 0
-				this.startDateProp = moment(this.hackathon.start_date).utc().format('MMM DD -');
-				this.endDateProp = moment(this.hackathon.end_date).utc().format('MMM DD, YYYY');
-				this.appStartDateProp = moment(this.hackathon.app_start_date).utc().format('MMM DD -');
-				this.appEndDateProp = moment(this.hackathon.app_end_date).utc().format('MMM DD, YYYY');
 			} catch (error) {
 				console.log(error)
 			}

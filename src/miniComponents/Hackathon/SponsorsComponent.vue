@@ -26,7 +26,7 @@
 							</div>
 							<img v-else alt="content" viewBox="0 0 24 24"
 								class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-purple-500 text-white flex-shrink-0"
-								src="https://www.logo.wine/a/logo/Google_Nexus/Google_Nexus-Logo.wine.svg" />
+								:src="sponsor.logo" />
 							<h2 class="flex-grow text-white text-lg title-font font-medium">
 								{{ sponsor.name }}
 							</h2>

@@ -159,6 +159,42 @@
 							type="date" placeholder="Hackathon Application End Date" v-model="appEndDate" />
 					</div>
 
+					<div class="identity-input mb-4">
+						<label for="venue" class="block text-gray-300 text-sm text-left font-bold mb-2">
+							Venue
+						</label>
+						<input id="venue"
+							class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+							type="text" placeholder="Venue" v-model="venue" />
+					</div>
+
+					<div class="identity-input mb-4">
+						<label for="theme" class="block text-gray-300 text-sm text-left font-bold mb-2">
+							Theme
+						</label>
+						<input id="theme"
+							class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+							type="text" placeholder="Theme" v-model="theme" />
+					</div>
+
+					<div class="identity-input mb-4">
+						<label for="maxTeam" class="block text-gray-300 text-sm text-left font-bold mb-2">
+							Maximum Team Size
+						</label>
+						<input id="maxTeam"
+							class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+							type="number" placeholder="Maximum Team Size" v-model="maxTeam" />
+					</div>
+
+					<div class="identity-input mb-4">
+						<label for="minTeam" class="block text-gray-300 text-sm text-left font-bold mb-2">
+							Minimum Team Size
+						</label>
+						<input id="minTeam"
+							class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+							type="number" placeholder="Minimum Team Size" v-model="minTeam" />
+					</div>
+
 					<div class="flex items-center justify-center">
 						<button @click="createHackathon($event)"
 							class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -197,6 +233,10 @@ export default {
 			endDate: '',
 			appStartDate: '',
 			appEndDate: '',
+			venue: '',
+			maxTeam: '',
+			minTeam: '',
+			theme: ''
 		}
 	},
 	methods: {
@@ -219,14 +259,26 @@ export default {
 		async createHackathon(event) {
 			event.preventDefault()
 			try {
+				if (this.name == '' || this.venue == '' || this.description == '' || this.startDate == '' || this.endDate == '' || this.appStartDate == '' || this.appEndDate == '' || this.maxTeam == '' || this.minTeam == '') {
+					alert('Please fill all the fields')
+					return
+				}
+				if (this.maxTeam < this.minTeam) {
+					alert('Maximum team size cannot be less than minimum team size')
+					return
+				}
 				await axios.post(`${API_URL}/hackathon`, {
-					name: this.name,
+					max_team_size: this.maxTeam,
+					min_team_size: this.minTeam,
+					venue: this.venue,
 					imgUrl: this.imgUrl,
 					description: this.description,
-					startDate: this.startDate,
-					endDate: this.endDate,
-					appStartDate: this.appStartDate,
-					appEndDate: this.appEndDate
+					start_date: this.startDate,
+					end_date: this.endDate,
+					application_open: this.appStartDate,
+					application_deadline: this.appEndDate,
+					name: this.name,
+					theme: this.theme
 				}, {
 					headers: {
 						Authorization: `Bearer ${JSON.parse(localStorage.user).token}`
