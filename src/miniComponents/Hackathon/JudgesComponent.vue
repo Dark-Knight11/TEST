@@ -83,11 +83,9 @@ export default {
 	methods: {
 		async addJudge(e) {
 			e.preventDefault();
-			const judges = this.hackathon.judges;
-			judges.push(this.email);
 			try {
 				const res = await axios.put(`${API_URL}/hackathon/${this.hackathon._id}`, {
-					"judges": judges
+					"email": this.email
 				}, {
 					headers: {
 						Authorization: `Bearer ${store.user.token}`
