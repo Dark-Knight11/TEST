@@ -84,7 +84,7 @@ export default {
 		async addJudge(e) {
 			e.preventDefault();
 			try {
-				const res = await axios.put(`${API_URL}/hackathon/${this.hackathon._id}`, {
+				const res = await axios.post(`${API_URL}/hackathon/${this.hackathon._id}/judge`, {
 					"email": this.email
 				}, {
 					headers: {
