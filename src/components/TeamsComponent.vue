@@ -1,5 +1,6 @@
 <template>
-	<details-component :hackathon="hackathon" :isAdmin="isAdmin" />
+	<details-component :hackathon="hackathon" :isAdmin="isAdmin" :startDateProp="startDateProp" :endDateProp="endDateProp"
+		:appEndDateProp="appEndDateProp" :appStartDateProp="appStartDateProp"/>
 	<div class="flex justify-center">
 		<div class="w-4/5 h-1 rounded-full bg-purple-500 inline-flex"></div>
 	</div>
@@ -99,6 +100,7 @@
 import DetailsComponent from '@/miniComponents/Hackathon/DetailsComponent.vue'
 import axios from 'axios'
 import { store, API_URL } from '@/common/user.js'
+import moment from 'moment'
 export default {
 	name: 'TeamsComponent',
 	components: { DetailsComponent },
@@ -112,6 +114,10 @@ export default {
 			review: '',
 			isAddReviewOpen: false,
 			activatedID: null,
+			startDateProp: '',
+			endDateProp: '',
+			appStartDateProp: '',
+			appEndDateProp: ''
 		}
 	},
 	methods: {
@@ -125,6 +131,10 @@ export default {
 				}
 				const res = await axios.get(`${API_URL}/hackathon/secret/${this.hackathonId}`, config)
 				this.hackathon = res.data
+				this.startDateProp = moment(this.hackathon.start_date).utc().format('MMM DD -');
+				this.endDateProp = moment(this.hackathon.end_date).utc().format('MMM DD, YYYY');
+				this.appStartDateProp = moment(this.hackathon.application_open).utc().format('MMM DD -');
+				this.appEndDateProp = moment(this.hackathon.application_deadline).utc().format('MMM DD, YYYY');
 				this.isAdmin = this.hackathon.admin._id === store.user._id
 				this.isJudge = this.isJudge = this.hackathon.judges.some(
 					(member) => member._id.toString() === store.user._id
