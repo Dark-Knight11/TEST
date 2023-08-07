@@ -117,9 +117,10 @@ export default {
 	methods: {
 		async getHackathon() {
 			try {
+				const token = JSON.parse(localStorage.user).token
 				const config = {
 					headers: {
-						Authorization: `Bearer ${store.user.token}`,
+						Authorization: `Bearer ${token}`,
 					},
 				}
 				const res = await axios.get(`${API_URL}/hackathon/secret/${this.hackathonId}`, config)
