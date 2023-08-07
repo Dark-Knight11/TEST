@@ -13,16 +13,19 @@
 					Add Judge
 				</button>
 			</div>
-			<div v-for="judge in hackathon.judges" :key="judge._id" class="flex flex-wrap -m-2 items-center justify-center">
-				<div class="p-2 lg:w-1/3 md:w-1/2 w-full">
-					<div class="h-full flex items-center bg-gray-800 border-gray-800 border p-4 rounded-lg">
-						<img alt="team"
-							class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-							src="https://dummyimage.com/100x90" />
-						<div class="flex-grow">
-							<h2 class="text-white title-font font-medium">{{ judge.first_name + " " + judge.last_name }}
-							</h2>
-							<p class="text-purple-600 font-semibold tracking-wider">QA Engineer</p>
+			<div class="flex flex-wrap justify-center">
+				<div v-for="judge in hackathon.judges" :key="judge._id"
+					class=" p-4 w-80 flex ">
+					<div class="flex-wrap w-full items-center justify-center">
+						<div class="h-full flex items-center bg-gray-800 border-gray-800 border p-4 rounded-lg">
+							<img alt="team"
+								class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+								src="https://dummyimage.com/100x90" />
+							<div class="flex-grow">
+								<h2 class="text-white title-font font-medium">{{ judge.first_name + " " + judge.last_name }}
+								</h2>
+								<p class="text-purple-600 font-semibold tracking-wider">QA Engineer</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -67,7 +70,7 @@
 
 <script>
 import axios from 'axios';
-import { store, API_URL } from '@/common/user.js'
+import { API_URL } from '@/common/user.js'
 export default {
 	name: 'JudgesComponent',
 	props: {
@@ -84,14 +87,16 @@ export default {
 		async addJudge(e) {
 			e.preventDefault();
 			try {
+				const token = JSON.parse(localStorage.user).token
 				const res = await axios.post(`${API_URL}/hackathon/${this.hackathon._id}/judge`, {
 					"email": this.email
 				}, {
 					headers: {
-						Authorization: `Bearer ${store.user.token}`
+						Authorization: `Bearer ${token}`
 					}
 				});
 				console.log(res);
+				this.$router.go();
 			} catch (error) {
 				console.log(error);
 			}
